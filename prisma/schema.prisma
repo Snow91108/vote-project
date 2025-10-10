@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Poll {
+  id        Int      @id @default(autoincrement())
+  question  String
+  options   Option[]
+  createdAt DateTime @default(now())
+}
+
+model Option {
+  id      Int    @id @default(autoincrement())
+  text    String
+  votes   Int    @default(0)
+  pollId  Int
+  poll    Poll   @relation(fields: [pollId], references: [id])
+}
